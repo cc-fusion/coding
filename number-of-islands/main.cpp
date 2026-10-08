@@ -20,9 +20,11 @@ auto getPointHash(int gridHeight) {
 }
 
 template <typename H>
-void countIslandsHelper(const Bool2D& islandGrid, std::unordered_set<Point, H> visitedPoints, const Point currPt) {
+void countIslandsHelper(const Bool2D& islandGrid, std::unordered_set<Point, H>& visitedPoints, const Point currPt) {
     int gridHeight {static_cast<int>(islandGrid.size())};
     int gridWidth {static_cast<int>(islandGrid[currPt.x].size())};
+    
+    visitedPoints.emplace(currPt);
     
     bool isTopLand    {currPt.y >= 1             && islandGrid[currPt.y-1][currPt.x  ]};
     bool isBottomLand {currPt.y < gridHeight - 1 && islandGrid[currPt.y+1][currPt.x  ]};
@@ -31,27 +33,19 @@ void countIslandsHelper(const Bool2D& islandGrid, std::unordered_set<Point, H> v
     
     if (isTopLand) {
         Point updatedPt {currPt.x, currPt.y - 1};
-        if (!visitedPoints.contains(updatedPt)) {
-            countIslandsHelper(islandGrid, visitedPoints, updatedPt);
-        }
+        if (!visitedPoints.contains(updatedPt)) countIslandsHelper(islandGrid, visitedPoints, updatedPt);
     }
     if (isBottomLand) {
         Point updatedPt {currPt.x, currPt.y + 1};
-        if (!visitedPoints.contains(updatedPt)) {
-            countIslandsHelper(islandGrid, visitedPoints, updatedPt);
-        }
+        if (!visitedPoints.contains(updatedPt)) countIslandsHelper(islandGrid, visitedPoints, updatedPt);
     }
     if (isLeftLand) {
         Point updatedPt {currPt.x - 1, currPt.y};
-        if (!visitedPoints.contains(updatedPt)) {
-            countIslandsHelper(islandGrid, visitedPoints, updatedPt);
-        }
+        if (!visitedPoints.contains(updatedPt)) countIslandsHelper(islandGrid, visitedPoints, updatedPt);
     }
     if (isRightLand) {
         Point updatedPt {currPt.x + 1, currPt.y};
-        if (!visitedPoints.contains(updatedPt)) {
-            countIslandsHelper(islandGrid, visitedPoints, updatedPt);
-        }
+        if (!visitedPoints.contains(updatedPt)) countIslandsHelper(islandGrid, visitedPoints, updatedPt);
     }
 }
 
@@ -80,7 +74,7 @@ int main() {
         {0,0,1,0,0},
         {0,1,1,1,0},
         {0,0,0,0,0},
-        {0,0,0,0,0},
+        {0,0,1,0,0},
         {0,1,0,0,1}
     };
     std::cout << countIslands(islandGrid) << "\n";
