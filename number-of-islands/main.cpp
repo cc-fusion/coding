@@ -22,7 +22,7 @@ auto getPointHash(int gridHeight) {
 template <typename H>
 void countIslandsHelper(const Bool2D& islandGrid, std::unordered_set<Point, H>& visitedPoints, const Point currPt) {
     int gridHeight {static_cast<int>(islandGrid.size())};
-    int gridWidth {static_cast<int>(islandGrid[currPt.x].size())};
+    int gridWidth {static_cast<int>(islandGrid[currPt.y].size())};
     
     visitedPoints.emplace(currPt);
     
